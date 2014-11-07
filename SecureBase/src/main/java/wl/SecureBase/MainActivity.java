@@ -42,10 +42,11 @@ public class MainActivity  extends Activity implements View.OnClickListener {
                 try {
                     String encKey = _cipher.encrypt(_key.getText().toString());
                     String encData=_cipher.encrypt(_data.getText().toString());
+                    byte[] IV = _cipher.getIV();
                     _key.setText("");
                     _data.setText("");
 
-                    Data data = new Data(encKey,encData);
+                    Data data = new Data(encKey,encData,IV);
                     _bd.insertData(data);
 
                 } catch (Exception e) {

@@ -11,10 +11,13 @@ public class Data {
     * */
     private String _key;
     private String _data;
+    private byte[] _IV;
 
-    public Data(String key,String data){
+    public Data(String key,String data,byte[] IV){
         _key=key;
         _data=data;
+        _IV = IV;
+
     }
 
     public String getKey() {
@@ -23,5 +26,8 @@ public class Data {
 
     public String getData() {
         return _data;
+    }
+    public byte[] getIV(){
+        return _IV;
     }
 }

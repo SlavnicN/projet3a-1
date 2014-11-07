@@ -16,6 +16,7 @@ public class DataBase {
 
     public static final String TABLE="secureT";
 
+    public static final String COL_IV = "IV";
     public static final String COL_KEY="key";
     public static final String COL_DATA="data";
     public static final String COL_ID="id";
@@ -24,6 +25,7 @@ public class DataBase {
     private static final int NUM_COL_ID = 0;
     private static final int NUM_COL_KEY = 1;
     private static final int NUM_COL_DATA = 2;
+    private static final int NUM_COL_IV = 3;
 
     private SQLiteDatabase _bdd;
 
@@ -58,8 +60,9 @@ public class DataBase {
         //Adding a value associate to a key (name of the column where the value is put)
         values.put(COL_KEY, d.getKey());
         values.put(COL_DATA, d.getData());
+        values.put(COL_IV,d.getIV());// byte[] in a String not sure if it work
         //insert the object in the db with ContentValues
-        Cursor cursor = _bdd.query(TABLE, new String[] {COL_ID, COL_KEY, COL_DATA}, COL_KEY + "=\"" + d.getKey() +"\" AND "+ COL_DATA +"=\""+d.getData()+"\"", null, null, null, null);
+        Cursor cursor = _bdd.query(TABLE, new String[] {COL_ID, COL_KEY, COL_DATA,COL_IV}, COL_KEY + "=\"" + d.getKey() +"\" AND "+ COL_DATA +"=\""+d.getData()+"\" AND "+COL_IV+"=\""+d.getIV()+"\"", null, null, null, null);
         if(cursor.getCount()==0){
             return _bdd.insert(TABLE, null, values); //return id
         }else{
@@ -75,7 +78,7 @@ public class DataBase {
     * */
     public Data getDataByKey(String key){
         //Get the value ,in a Cursor, corresponding to a client in the db (here it's thanks to his name)
-        Cursor c = _bdd.query(TABLE, new String[] {COL_ID, COL_KEY, COL_DATA}, COL_KEY + "=\"" + key +"\"", null, null, null, null);
+        Cursor c = _bdd.query(TABLE, new String[] {COL_ID, COL_KEY, COL_DATA,COL_IV}, COL_KEY + "=\"" + key +"\"", null, null, null, null);
 
 
         return cursorToData(c);
@@ -89,7 +92,7 @@ public class DataBase {
         //else we move on the first element
         c.moveToFirst();
         //Creation of a client
-        Data d = new Data(c.getString(NUM_COL_KEY),c.getString(NUM_COL_DATA));
+        Data d = new Data(c.getString(NUM_COL_KEY),c.getString(NUM_COL_DATA),c.getString(NUM_COL_IV).getBytes());
         //Closing the cursor
         c.close();
 
@@ -99,15 +102,15 @@ public class DataBase {
 
     public ArrayList<Data> getListData(){
         ArrayList<Data> list=new ArrayList<Data>();
-        Cursor c = _bdd.query(TABLE, new String[] {COL_ID, COL_KEY, COL_DATA},null, null, null, null, null);
+        Cursor c = _bdd.query(TABLE, new String[] {COL_ID, COL_KEY, COL_DATA,COL_IV},null, null, null, null, null);
         if(c.getCount()==0)
             return list;
         c.moveToFirst();
-        Data d = new Data(c.getString(NUM_COL_KEY),c.getString(NUM_COL_DATA));
+        Data d = new Data(c.getString(NUM_COL_KEY),c.getString(NUM_COL_DATA),c.getString(NUM_COL_IV).getBytes());
         list.add(d);
 
         while(c.moveToNext()){
-            Data d1 = new Data(c.getString(NUM_COL_KEY),c.getString(NUM_COL_DATA));
+            Data d1 = new Data(c.getString(NUM_COL_KEY),c.getString(NUM_COL_DATA),c.getString(NUM_COL_IV).getBytes());
             list.add(d1);
         }
 
