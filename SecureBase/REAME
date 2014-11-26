@@ -1,3 +1,11 @@
 probleme rencontrer:
 	-penser a suprimer l'application quand on change le format de la bdd (format stocker dans le tel)
-	-on rentre donner/ cle on le stock dans la bdd on extrait la donner de la bdd on dechiffre et on l'affiche dans la balise data
+	-on rentre donner/ cle on le stock dans la bdd on extrait la donner de la bdd on dechiffre
+	et on l'affiche dans la balise data
+
+
+Creation de fichier:
+    -dans le stockage interne car fichier accecible unisquement par l'aplication et si l'apli est desinstaller alors
+    le fichier aussi
+    -fichier normal ou cache
+    -nextInt chelou

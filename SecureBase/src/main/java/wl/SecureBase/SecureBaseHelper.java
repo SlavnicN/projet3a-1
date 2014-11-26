@@ -16,7 +16,7 @@ public class SecureBaseHelper extends SQLiteOpenHelper{
     private static final String COL_IV = "IV";
     private static final String CREATE_BDD = "CREATE TABLE IF NOT EXISTS " + TABLE + " ( "
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_KEY + " TEXT NOT NULL, "
-            + COL_DATA + " TEXT NOT NULL, "+ COL_IV + " TEXT NOT NULL);";
+            + COL_DATA + " TEXT NOT NULL, "+ COL_IV + " BLOB);";
 
     public SecureBaseHelper(Context context, String name,
                             SQLiteDatabase.CursorFactory factory, int version) {
@@ -26,17 +26,18 @@ public class SecureBaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //on créé la table à partir de la requête écrite dans la variable CREATE_BDD
         db.execSQL(CREATE_BDD);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //On peut fait ce qu'on veut ici moi j'ai décidé de supprimer la table et de la recréer
-        //comme ça lorsque je change la version les id repartent de 0
+
         db.execSQL("DROP TABLE " + TABLE + ";");
         onCreate(db);
 
     }
 
 }
+
+
+//TODO StackTrace, Challenge/Reponse, Donné static pour la cle, KeyChain

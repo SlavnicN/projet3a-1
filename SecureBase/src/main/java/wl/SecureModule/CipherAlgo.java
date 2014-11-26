@@ -13,6 +13,8 @@ public class CipherAlgo {
 
     private static String _algo;
     private static String _keyValue;
+    private static String _encoding ="UTF-8";
+    private static String _secretKeyMode = "AES";
 
     public CipherAlgo(){
         _algo = "AES/CBC/PKCS5Padding";
@@ -40,17 +42,17 @@ public class CipherAlgo {
 
     public byte[] encrypt(String plainText,byte[] IV) throws Exception {
         Cipher cipher = Cipher.getInstance(_algo);
-        SecretKeySpec key = new SecretKeySpec(_keyValue.getBytes("UTF-8"), "AES");
+        SecretKeySpec key = new SecretKeySpec(_keyValue.getBytes(_encoding), _secretKeyMode);
         cipher.init(Cipher.ENCRYPT_MODE, key,new IvParameterSpec(IV));
-        byte[] encVal=cipher.doFinal(plainText.getBytes("UTF-8"));
+        byte[] encVal=cipher.doFinal(plainText.getBytes(_encoding));
         return encVal;
     }
 
     public String decrypt(byte[] cipherText,byte[] IV) throws Exception{
         Cipher cipher = Cipher.getInstance(_algo);
-        SecretKeySpec key = new SecretKeySpec(_keyValue.getBytes("UTF-8"), "AES");
+        SecretKeySpec key = new SecretKeySpec(_keyValue.getBytes(_encoding), _secretKeyMode);
         cipher.init(Cipher.DECRYPT_MODE, key,new IvParameterSpec(IV));
-        return new String(cipher.doFinal(cipherText),"UTF-8");
+        return new String(cipher.doFinal(cipherText),_encoding);
 
     }
 

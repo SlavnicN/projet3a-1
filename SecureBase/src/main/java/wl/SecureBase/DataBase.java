@@ -61,22 +61,15 @@ public class DataBase {
         //Adding a value associate to a key (name of the column where the value is put)
         values.put(COL_KEY, d.getKey());
         values.put(COL_DATA, d.getData());
-        byte[] b = d.getIV();
-        String IV;
-        try {
-            IV = new String(b,"ISO-8859-1");
-            values.put(COL_IV,IV);// byte[] in a String not sure if it work
-            //insert the object in the db with ContentValues
-            Cursor cursor = _db.query(TABLE, new String[] {COL_ID, COL_KEY, COL_DATA,COL_IV}, COL_KEY + "=\"" + d.getKey() +"\" AND "+ COL_DATA +"=\""+d.getData()+"\" AND "+COL_IV+"=\""+IV+"\"", null, null, null, null);
-            if(cursor.getCount()==0){
-                return _db.insert(TABLE, null, values); //return id
-            }else{
-                return -1;
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return -1;
+
+        values.put(COL_IV,d.getIV());// byte[] in a String not sure if it work
+        //insert the object in the db with ContentValues
+                Cursor cursor = _db.query(TABLE, new String[] {COL_ID, COL_KEY, COL_DATA,COL_IV}, COL_KEY + "=\"" + d.getKey() +"\" AND "+ COL_DATA +"=\""+d.getData()+"\" AND "+COL_IV+"=\""+d.getIV()+"\"", null, null, null, null);
+                if(cursor.getCount()==0){
+                    return _db.insert(TABLE, null, values); //return id
+                }else{
+                    return -1;
+                }
     }
 
     public long deleteDataByKey(String key){
@@ -100,19 +93,15 @@ public class DataBase {
             return null;
         //else we move on the first element
         c.moveToFirst();
-        //Creation of a client
         Data d=null;
-        try {
-            d = new Data(c.getString(NUM_COL_KEY),c.getString(NUM_COL_DATA),c.getString(NUM_COL_IV).getBytes("ISO-8859-1"));
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
+            d = new Data(c.getString(NUM_COL_KEY),c.getString(NUM_COL_DATA),c.getBlob(NUM_COL_IV));//Storage as Byte array(Blob)
+
 
         //Closing the cursor
         c.close();
 
-        //returning the book
+
         return d;
     }
 
@@ -134,6 +123,10 @@ public class DataBase {
     }
 
 
+    public void clearBase(){
+        _db.delete(TABLE,null,null);
+
+    }
 
 
 }
