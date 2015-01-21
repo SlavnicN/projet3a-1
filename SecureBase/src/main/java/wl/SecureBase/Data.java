@@ -12,7 +12,6 @@ public class Data {
     * */
     /**
      * TODO change the name key1 and replace string1 by data from the phone
-     * TODO use the class TelephonyManager to get data
      */
     private static String string1 = "ENSICAENENSICAEN";
     public static BigInteger key1 = new BigInteger(string1.getBytes());

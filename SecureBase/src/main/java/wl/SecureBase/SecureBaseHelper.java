@@ -38,6 +38,3 @@ public class SecureBaseHelper extends SQLiteOpenHelper{
     }
 
 }
-
-
-//TODO StackTrace, Challenge/Reponse, Donné static pour la cle, KeyChain

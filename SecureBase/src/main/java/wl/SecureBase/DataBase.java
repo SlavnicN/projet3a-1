@@ -80,9 +80,7 @@ public class DataBase {
     public long deleteDataByKey(String key){
         return _db.delete(TABLE, COL_KEY + "=" + key, null);
     }
-    /*
-    * TODO request searching the primary key
-    * */
+
     public Data getDataByKey(String key){
         //Get the value ,in a Cursor, corresponding to a client in the db (here it's thanks to his name)
         Cursor c = _db.query(TABLE, new String[] {COL_ID, COL_KEY, COL_DATA,COL_IV}, COL_KEY + "=\"" + key +"\"", null, null, null, null);
