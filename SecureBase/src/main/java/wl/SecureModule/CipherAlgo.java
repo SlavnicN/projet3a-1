@@ -22,21 +22,22 @@ public class CipherAlgo {
     private static String _secretKeyMode = "AES";
     private static BigInteger _Combinekey;
     private static BigInteger[] _SecretKey;
+    private static BigInteger _MasterKey;
 
     public CipherAlgo(){
         _algo = "AES/CBC/PKCS5Padding";
 
+        //Shamir
         _SecretKey = new BigInteger[3];
         _SecretKey[0] = Data.secret1;
         _SecretKey[1] = DataBase.secret2;
         _SecretKey[2] = DisplayInfo.secret3;
-
         Shamir shamir = new Shamir();
         _Combinekey  = shamir.combine(_SecretKey);
 
-        //Master key made by xoring 3 different key
-        //_Masterkey = Data.key1.xor(DataBase.key2.xor(DisplayInfo.key3));
-
+        //AlgoPerso
+        AlgoPerso algoPerso = new AlgoPerso();
+        _MasterKey = algoPerso.get_MasterKey();
     }
 
     /**
@@ -60,15 +61,15 @@ public class CipherAlgo {
     //_keyValue.getBytes(_encoding)
     public byte[] encrypt(String plainText,byte[] IV) throws Exception {
         Cipher cipher = Cipher.getInstance(_algo);
-        SecretKeySpec key = new SecretKeySpec(_Combinekey.toByteArray(), _secretKeyMode);
-        cipher.init(Cipher.ENCRYPT_MODE, key,new IvParameterSpec(IV));
+        SecretKeySpec key = new SecretKeySpec(_MasterKey.toByteArray(), _secretKeyMode);
+        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(IV));
         byte[] encVal=cipher.doFinal(plainText.getBytes(_encoding));
         return encVal;
     }
 
     public String decrypt(byte[] cipherText,byte[] IV) throws Exception{
         Cipher cipher = Cipher.getInstance(_algo);
-        SecretKeySpec key = new SecretKeySpec(_Combinekey.toByteArray(), _secretKeyMode);
+        SecretKeySpec key = new SecretKeySpec(_MasterKey.toByteArray(), _secretKeyMode);
         cipher.init(Cipher.DECRYPT_MODE, key,new IvParameterSpec(IV));
         return new String(cipher.doFinal(cipherText),_encoding);
 
