@@ -28,7 +28,7 @@ public class PhoneData {
     private TelephonyManager _tm;
 
     public static int[] keyRand;
-    Random rand = new Random();
+
 
     public PhoneData(TelephonyManager tm){
 
@@ -58,14 +58,14 @@ public class PhoneData {
 
 
         //Random value to get the data in the RandTab
-        /**
-         * TODO manag more RandTab not realy flexibale for more tab added and the lenght
-         */
         keyRand = new int[MainActivity.LEN];
+        keyRand[0] = 0;
+        keyRand[1] = 5;
+        keyRand[2] = 2;
+        keyRand[3] = 0;
+        keyRand[4] = 1;
+        keyRand[5] = 3;
 
-        for(int i=0;i<MainActivity.LEN;i++){
-            keyRand[i] = rand.nextInt((MainActivity.LEN-1) + 1);
-        }
     }
 
     public void PrintData(){

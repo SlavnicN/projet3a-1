@@ -14,14 +14,19 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import wl.SecureModule.RandTab;
 
 /**
  * Created by huang and slavnic on 29/10/14.
  */
 public class DisplayInfo extends Activity implements OnClickListener{
+    //Shamir
     private static String string3 = "DISPLAYINFODISPL";
     public static BigInteger key3 = new BigInteger(string3.getBytes());
     public static BigInteger secret3;
+
+    //AlgoPerso
+    public static RandTab RandTab3 = new RandTab(2);
 
     private Button _back;
     private DataBase _db;

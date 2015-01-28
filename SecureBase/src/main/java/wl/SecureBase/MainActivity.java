@@ -38,10 +38,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     //Phone's Data and generate the random for the RandTab
     public static PhoneData phoneData;
 
-    //Random tab for the key
-    //TODO Use preferenceManager?
-    public static int LEN =6;
-    public static RandTab RandTab = new RandTab(LEN);
+    //Randtab length
+    public static int LEN = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +63,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Shamir shamir = new Shamir();
         shamir.split();
 
+        //Get data from phone
+        TelephonyManager tm=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        phoneData = new PhoneData(tm);
+
+        //Random Tab
+        //new AlgoPerso();
+
         _cipher=new CipherAlgo();
         try {
             _prng = SecureRandom.getInstance("SHA1PRNG");
@@ -72,18 +77,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
         _IV = new byte[16];
-
-
-
-        testShamir();
-
-        //Get data from phone
-        TelephonyManager tm=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        phoneData = new PhoneData(tm);
-
-        //Random Tab
-        RandTab.printRand();
-        new AlgoPerso();
 
     }
 
@@ -171,7 +164,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         shamir.split(SecretEnsi);
         BigInteger sommecoeff = shamir.combine(shamir.get_coeff());
 
-        System.out.println("Secret ="+SecretEnsi+" et Shamir = "+sommecoeff);
+        //System.out.println("Secret ="+SecretEnsi+" et Shamir = "+sommecoeff);
 
 
 
